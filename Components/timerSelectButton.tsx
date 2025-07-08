@@ -1,33 +1,45 @@
-import { View, Button, StyleSheet } from "react-native";
+import { Text, StyleSheet, Pressable } from "react-native";
 
 interface timerSelectButtonProps{
-    title:string,
-    id:number,
-    onPress: () => void
+    title:string;
+    id:number;
+    onPress: () => void;
+    currentTimer: boolean;
 }
 
-const timerSelectButton:React.FC<timerSelectButtonProps> = ({title, id, onPress}) =>{
+const timerSelectButton:React.FC<timerSelectButtonProps> = ({title, id, onPress, currentTimer}) =>{
     return(
-        <View
-            style={styles.buttonContainer}
-        >
-            <Button 
+        <>
+            <Pressable
+                style={currentTimer? styles.currentPressable:styles.pressable}
                 key={id}
                 onPress={onPress}
-                title={title}
-                
-            />
-        </View>
+            >
+                <Text
+                style={styles.buttonText}
+                >
+                    {title}
+                </Text>
+            </Pressable>
+        </>
     ) 
 }
 
 const styles = StyleSheet.create({
-    buttonContainer:{
-        color:'#FFF',
-        backgroundColor:'#144480',
-        borderWidth: 1,
+    pressable:{
         borderRadius: 15,
-    }
+        padding: 10,
+    },
+    currentPressable:{
+        borderRadius: 15,
+        backgroundColor:'#144480',
+        padding: 10,
+    },
+    buttonText:{
+        color:'#FFFF',
+        fontSize:16,
+        fontWeight:'500',
+    },
 })
 
 export default timerSelectButton;
