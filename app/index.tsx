@@ -8,17 +8,17 @@ export default function Index() {
 
   const apllicationModes = [
     {
-      id: 1,
+      id: 0,
       timer: 25*60,
       title:'Foco',
     },
     {
-      id: 2,
+      id: 1,
       timer: 5*60,
       title:'Pausa Curta',
     },
     {
-      id: 3,
+      id: 2,
       timer: 15*60,
       title:'Pausa Longa',
     },
@@ -28,9 +28,10 @@ export default function Index() {
   const [seconds, setSeconds] = useState(apllicationModes[0].timer);
   const timerRef = useRef(null);
 
-  function changeTimerTOption(idTimer:number){
-    setCurrentTimerMode(apllicationModes[idTimer-1]);
-    setSeconds(currentTimerMode.timer);
+  async function changeTimerOption(idTimer:number){
+    const newTimerMode = apllicationModes[idTimer]
+    await setCurrentTimerMode(newTimerMode);
+    setSeconds(newTimerMode.timer);
     setTimeRuning(false);
     timerRef.current = null;
   }
@@ -72,7 +73,7 @@ export default function Index() {
       >
       {
         <Image
-          source={currentTimerMode.id === 1? require('./img-foco.png'): currentTimerMode.id === 2? require('./img-descanso-longo.png'):require('./img-descanso-curto.png')}
+          source={currentTimerMode.id === 0? require('./img-foco.png'): currentTimerMode.id === 1? require('./img-descanso-longo.png'):require('./img-descanso-curto.png')}
           style={styles.image}
         />
       }
@@ -88,9 +89,9 @@ export default function Index() {
             return (
               <>
                 <TimerSelectButton
-                  id={timer.id}
+                  key={timer.id}
                   title={timer.title}
-                  onPress={() => changeTimerTOption(timer.id)}
+                  onPress={() => changeTimerOption(timer.id)}
                   currentTimer={currentTimerMode.id === timer.id}
                 />
               </>

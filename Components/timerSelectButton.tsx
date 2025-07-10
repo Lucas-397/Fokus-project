@@ -2,17 +2,16 @@ import { Text, StyleSheet, Pressable } from "react-native";
 
 interface timerSelectButtonProps{
     title:string;
-    id:number;
     onPress: () => void;
     currentTimer: boolean;
 }
 
-const timerTypeButton:React.FC<timerSelectButtonProps> = ({title, id, onPress, currentTimer}) =>{
+const timerTypeButton:React.FC<timerSelectButtonProps> = ({title, onPress, currentTimer}) =>{
     return(
         <>
             <Pressable
                 style={currentTimer? styles.currentPressable:styles.pressable}
-                key={id}
+                disabled={currentTimer}
                 onPress={onPress}
             >
                 <Text
