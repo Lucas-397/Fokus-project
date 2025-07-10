@@ -7,7 +7,7 @@ interface timerSelectButtonProps{
     currentTimer: boolean;
 }
 
-const timerSelectButton:React.FC<timerSelectButtonProps> = ({title, id, onPress, currentTimer}) =>{
+const timerTypeButton:React.FC<timerSelectButtonProps> = ({title, id, onPress, currentTimer}) =>{
     return(
         <>
             <Pressable
@@ -42,4 +42,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default timerSelectButton;
+export default timerTypeButton;

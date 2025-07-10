@@ -1,32 +1,66 @@
+import {Timer} from "@/Components/timer";
 import TimerSelectButton from "@/Components/timerSelectButton";
-import { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Text, View, StyleSheet,Image, Pressable } from "react-native";
 
+
 export default function Index() {
-  
-  const timerOptions = [
+
+  const apllicationModes = [
     {
       id: 1,
-      timer: 25,
-      title:'Foco'
+      timer: 25*60,
+      title:'Foco',
     },
     {
       id: 2,
-      timer: 5,
-      title:'Pausa Curta'
+      timer: 5*60,
+      title:'Pausa Curta',
     },
     {
       id: 3,
-      timer: 15,
-      title:'Pausa Longa'
+      timer: 15*60,
+      title:'Pausa Longa',
     },
   ]
-  const [currentTimer, setCurrentTimer] = useState(timerOptions[0]);
   const [timeRuning, setTimeRuning] = useState(false);
+  const [currentTimerMode, setCurrentTimerMode] = useState(apllicationModes[0]);
+  const [seconds, setSeconds] = useState(apllicationModes[0].timer);
+  const timerRef = useRef(null);
 
   function changeTimerTOption(idTimer:number){
-    setCurrentTimer(timerOptions[idTimer-1]);
+    setCurrentTimerMode(apllicationModes[idTimer-1]);
+    setSeconds(currentTimerMode.timer);
     setTimeRuning(false);
+    timerRef.current = null;
+  }
+
+  const toggleTimer = () => {
+    console.log('hello');
+    if(timerRef.current){//caso o timerRef seja diferente de null
+      pauseTimer()
+      return 
+    }
+    setTimeRuning(true);
+    const id:any = setInterval(()=>{
+      setSeconds((oldState) =>{
+        if(oldState === 0){
+          pauseTimer();
+          return currentTimerMode.timer
+        }
+        return oldState - 1;
+      })
+    }, 1000)
+
+    timerRef.current = id;
+  }
+
+  const pauseTimer = () =>{
+    if(timerRef.current){
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+      setTimeRuning(false);
+    }
   }
 
   return (
@@ -36,42 +70,42 @@ export default function Index() {
       <View
         style={styles.imageContainer}
       >
-      <Image 
-      source={require('../assets/Imagens/Imagem foco.png')}
-      style={styles.image}
-      />
+      {
+        <Image
+          source={currentTimerMode.id === 1? require('./img-foco.png'): currentTimerMode.id === 2? require('./img-descanso-longo.png'):require('./img-descanso-curto.png')}
+          style={styles.image}
+        />
+      }
       </View>
 
       <View
-        style={styles.modalContainer}
+        style={styles.fokusContainer}
       >
         <View
           style={{display: 'flex', flexDirection:'row', gap:'10px'}}
         >
-          {timerOptions.map((timer)=>{
+          {apllicationModes.map((timer)=>{
             return (
               <>
                 <TimerSelectButton
                   id={timer.id}
                   title={timer.title}
                   onPress={() => changeTimerTOption(timer.id)}
-                  currentTimer={currentTimer.id === timer.id}
+                  currentTimer={currentTimerMode.id === timer.id}
                 />
               </>
             )
           })}
         </View>
-        <View>
-          <Text
-            style={styles.timerText}
-          >
-            {currentTimer.timer}
-          </Text>
-        </View>
+
+        <Timer
+          totalSeconds={seconds}
+        />
+
         <View>
           <Pressable
             style={styles.actionButton}
-            onPress={() => console.log('pressed')} 
+            onPress={toggleTimer} 
           >
             <Text
               style={styles.actionButtonText}
@@ -103,7 +137,7 @@ const styles = StyleSheet.create({
     height: '100%',
     boxSizing:'border-box',
   },
-  modalContainer:{
+  fokusContainer:{
     borderColor: '#144480',
     borderWidth:2,
     borderRadius:'25px',
@@ -111,12 +145,6 @@ const styles = StyleSheet.create({
     alignItems:'center',
     boxSizing:'border-box',
     backgroundColor:'#14448080',
-  },
-  timerText:{
-    color:'#FFF', 
-    fontSize:42,
-    fontWeight:'500',
-    margin:10,
   },
   actionButton:{
     backgroundColor:'#B872FF',
@@ -130,5 +158,4 @@ const styles = StyleSheet.create({
     fontSize:20,
     fontWeight:'500',
   }
-
 })
