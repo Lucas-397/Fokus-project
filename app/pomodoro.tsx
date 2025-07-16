@@ -1,7 +1,8 @@
+import { ActionButton } from "@/Components/actionButton";
 import {Timer} from "@/Components/timer";
 import TimerSelectButton from "@/Components/timerSelectButton";
 import React, { useRef, useState } from "react";
-import { Text, View, StyleSheet,Image, Pressable } from "react-native";
+import { View, StyleSheet, Image } from "react-native";
 
 
 export default function Pomodoro() {
@@ -104,18 +105,10 @@ export default function Pomodoro() {
           totalSeconds={seconds}
         />
 
-        <View>
-          <Pressable
-            style={styles.actionButton}
-            onPress={toggleTimer} 
-          >
-            <Text
-              style={styles.actionButtonText}
-            >
-              {timeRuning? 'Pausar':'Continuar'}
-            </Text>
-          </Pressable>
-        </View>
+      <ActionButton 
+        text={timeRuning? 'Pausar':'Continuar'} 
+        onPress={toggleTimer}       
+      />
       </View>
     </View>
   );
@@ -148,16 +141,4 @@ export const styles = StyleSheet.create({
     boxSizing:'border-box',
     backgroundColor:'#14448080',
   },
-  actionButton:{
-    backgroundColor:'#B872FF',
-    color:'#041832',
-    width: 265,
-    alignItems:'center',
-    padding:5,
-    borderRadius:'30px'
-  },
-  actionButtonText:{
-    fontSize:20,
-    fontWeight:'500',
-  }
-})
+});
