@@ -74,7 +74,7 @@ export default function Pomodoro() {
       >
       {
         <Image
-          source={currentTimerMode.id === 0? require('./img-foco.png'): currentTimerMode.id === 1? require('./img-descanso-longo.png'):require('./img-descanso-curto.png')}
+          source={currentTimerMode.id === 0? require('../assets/Images/img-foco.png'): currentTimerMode.id === 1? require('../assets/Images/img-descanso-longo.png'):require('../assets/Images/img-descanso-curto.png')}
           style={styles.image}
         />
       }
